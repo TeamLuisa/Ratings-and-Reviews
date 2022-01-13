@@ -157,5 +157,9 @@
 4. - $ touch ~/.gitignore
    -  $ git config --global core.excludesFile ~/.gitignore
 
-5. - $ brew install postgresqk
-   -
+5. - $ brew install postgres
+   - $ npm install pg
+
+6. To iniate API server that interacts with DB
+   - $ npm install pq-promise
+	 - $ npm install express
