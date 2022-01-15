@@ -1,5 +1,6 @@
 const express = require('express');
-const { getReviews } = require('../helpers/middleware');
+const { getReviews } = require('../helpers/getReviews');
+const { getReviewsMeta } = require('../helpers/getReviewsMeta');
 const db = require('../database/index');
 
 const app = express();
@@ -15,15 +16,7 @@ app.get('/reviews', async (req, res) => {
 });
 
 app.get('/reviews/meta', async (req, res) => {
-  // const productId = req.query.product_id;
-  // const page = req.query.page || 1;
-  // const count = req.query.count || 5;
-  // const getQuery = `SELECT ${productId} AS product_id FROM product LIMIT 25`;
-  const getQuery = `SELECT JSON_AGG(JSON_BUILD_OBJECT('id', p.id, 'url', p.url)) AS photos
-  FROM reviews r RIGHT JOIN reviews_photos p ON p.review_id = r.id WHERE p.review_id = 5
-  GROUP BY p.review_id`;
-  const results = await db.query(getQuery);
-  res.send(results);
+  getReviewsMeta(req, res);
 });
 
 app.get('/photos', async (req, res) => {

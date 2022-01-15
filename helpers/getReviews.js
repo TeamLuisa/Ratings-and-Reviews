@@ -37,7 +37,7 @@ module.exports.getReviews = async (req, res) => {
   // r.helpfulness)`;
 
   const queryOutput = await db.query(getQuery1);
-  const { results } = queryOutput[0];
+  const { results } = queryOutput.length === 0 ? [] : queryOutput[0];
   const queries = [];
 
   for (let i = 0; i < results.length; i += 1) {
