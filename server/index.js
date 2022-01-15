@@ -36,14 +36,35 @@ app.get('/reviews', async (req, res) => {
   'reviewer_name', reviewer_name, 'helpfulness', helpfulness) ORDER BY ${sortBy}) AS results FROM reviews
   WHERE product_id = ${productId} GROUP BY product_id LIMIT ${page * count}`;
 
-  const getQuery = `SELECT r.id AS review_id, r.rating, r.summary, r.recommend, r.response, r.body,
-  TO_TIMESTAMP( r.date/1000 ) AS date, r.reviewer_name, r.helpfulness,
-  JSON_AGG(JSON_BUILD_OBJECT('id', p.id, 'url', p.url)) AS photos FROM reviews r JOIN reviews_photos p
-  ON p.review_id = r.id WHERE r.product_id = ${productId} GROUP BY (r.id, r. rating, r.summary,
-  r.recommend, r.response, r.body, r.date, r.reviewer_name, r.helpfulness)`;
+  // const getQuery = `SELECT r.id AS review_id, r.rating, r.summary, r.recommend, r.response,
+  // r.body, TO_TIMESTAMP( r.date/1000 ) AS date, r.reviewer_name, r.helpfulness,
+  // JSON_AGG(JSON_BUILD_OBJECT('id', p.id, 'url', p.url)) AS photos FROM reviews r JOIN
+  // reviews_photos p ON p.review_id = r.id WHERE r.product_id = ${productId} GROUP BY
+  // (r.id, r. rating, r.summary, r.recommend, r.response, r.body, r.date, r.reviewer_name,
+  // r.helpfulness)`;
 
   const queryOutput = await db.query(getQuery1);
-  data.results = queryOutput[0].results;
+  const { results } = queryOutput[0];
+  const queries = [];
+
+  for (let i = 0; i < results.length; i += 1) {
+    results[i].photos = [];
+
+    const getPhotosQuery = `SELECT JSON_AGG(JSON_BUILD_OBJECT('id', p.id, 'url', p.url)) AS photos
+    FROM reviews r RIGHT JOIN reviews_photos p ON p.review_id = r.id
+    WHERE p.review_id = ${results[i].review_id} GROUP BY p.review_id`;
+
+    queries.push(getPhotosQuery);
+  }
+
+  const returnedURLs = await Promise.all(queries.map((getPhotosQuery) => db.query(getPhotosQuery)));
+  returnedURLs.map((url, i) => {
+    if (url.length > 0) {
+      results[i].photos = results[i].photos.concat(url[0].photos);
+    }
+  });
+
+  data.results = results;
   res.send(data);
 });
 
