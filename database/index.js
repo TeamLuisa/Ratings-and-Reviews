@@ -4,7 +4,7 @@ const credentials = {
   host: 'localhost',
   port: 5432,
   database: 'ratings_and_reviews',
-  user: 'wisdomibole',
+  user: 'username',
   password: '',
 };
 
