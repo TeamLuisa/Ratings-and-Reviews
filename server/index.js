@@ -1,7 +1,8 @@
 const express = require('express');
 const { getReviews } = require('../helpers/getReviews');
 const { getReviewsMeta } = require('../helpers/getReviewsMeta');
-const { postReviews, playFunc } = require('../helpers/postReviews');
+const { postReviews } = require('../helpers/postReviews');
+const { markHelpful, reportReview } = require('../helpers/putReviews');
 // const db = require('../database/index');
 
 const app = express();
@@ -24,9 +25,13 @@ app.post('/reviews', (req, res) => {
   postReviews(req, res);
 });
 
-// app.post('/testing', (req, res) => {
-//   playFunc(req, res);
-// });
+app.put('/reviews/:review_id/helpful', (req, res) => {
+  markHelpful(req, res);
+});
+
+app.put('/reviews/:review_id/report', (req, res) => {
+  reportReview(req, res);
+});
 
 app.listen(port, () => {
   console.log('Server is now listening at port ', port);
