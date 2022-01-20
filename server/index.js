@@ -16,41 +16,25 @@ const port = 3300;
 
 // db.connect();
 
-app.get('/reviews', (req, res) => {
-  getReviews(req, res);
-});
+app.get('/reviews', getReviews);
 
 /* ----- Alternate GET /reviews route ----- */
-app.get('/reviewsbis', (req, res) => {
-  getReviewsBis(req, res);
-});
+app.get('/reviewsbis', getReviewsBis);
 /* ----- End of alternate GET /reviews route ----- */
 
-app.get('/reviews/meta', (req, res) => {
-  getReviewsMeta(req, res);
-});
+app.get('/reviews/meta', getReviewsMeta);
 
 /* ----- Alternate GET /reviews/meta routes ----- */
-app.get('/reviews/metabis1', (req, res) => {
-  getReviewsMetaBis1(req, res);
-});
+app.get('/reviews/metabis1', getReviewsMetaBis1);
 
-app.get('/reviews/metabis2', (req, res) => {
-  getReviewsMetaBis2(req, res);
-});
+app.get('/reviews/metabis2', getReviewsMetaBis2);
 /* ----- End of alternate GET /reviews/meta routes ----- */
 
-app.post('/reviews', (req, res) => {
-  postReviews(req, res);
-});
+app.post('/reviews', postReviews);
 
-app.put('/reviews/:review_id/helpful', (req, res) => {
-  markHelpful(req, res);
-});
+app.put('/reviews/:review_id/helpful', markHelpful);
 
-app.put('/reviews/:review_id/report', (req, res) => {
-  reportReview(req, res);
-});
+app.put('/reviews/:review_id/report', reportReview);
 
 app.listen(port, () => {
   console.log('Server is now listening at port ', port);
