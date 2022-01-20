@@ -23,5 +23,12 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
     "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.17.2",
+    "k6": "^0.0.0",
+    "newrelic": "^8.7.1",
+    "pg-promise": "^10.11.1"
   }
 }
