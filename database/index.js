@@ -6,6 +6,7 @@ const credentials = {
   database: 'ratings_and_reviews',
   user: 'username',
   password: '',
+  // password: 'password',
 };
 
 const db = pgp(credentials);
